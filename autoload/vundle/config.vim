@@ -138,10 +138,11 @@ endf
 func! s:parse_name(arg)
   let arg = a:arg
   let git_proto = exists('g:vundle_default_git_proto') ? g:vundle_default_git_proto : 'https'
+  let github_url = exists('g:vundle_default_github_url') ? g:vundle_default_github_url : 'github.com'
 
   if    arg =~? '^\s*\(gh\|github\):\S\+'
   \  || arg =~? '^[a-z0-9][a-z0-9-]*/[^/]\+$'
-    let uri = git_proto.'://github.com/'.split(arg, ':')[-1]
+    let uri = git_proto.'://'.github_url.'/'.split(arg, ':')[-1]
     if uri !~? '\.git$'
       let uri .= '.git'
     endif
