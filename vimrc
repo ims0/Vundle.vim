@@ -10,29 +10,29 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'ims0/Vundle.vim'
 Plugin 'Yggdroot/LeaderF'
-Plugin 'grailbio/bazel-compilation-database'
-"Plugin 'vim-scripts/cscope.vim'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rhubarb'
-Plugin 'mbbill/code_complete'
-Plugin 'godlygeek/tabular'
-Plugin 'inkarkat/vim-ingo-library'
-Plugin 'ims0/vim-mark'
+Plugin 'tpope/vim-fugitive' "Git blame
+Plugin 'inkarkat/vim-ingo-library' "common autoload functions
+Plugin 'ims0/vim-mark'  "Requires the ingo-library.vim plugin
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'mbbill/code_complete'
+Plugin 'Valloric/YouCompleteMe'
+"Plugin 'tpope/vim-rhubarb'  "open GitHub URLs
+"Plugin 'grailbio/bazel-compilation-database'
+"Plugin 'vim-scripts/cscope.vim'
 "{lua
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-lua-ftplugin'
+""Plugin 'xolox/vim-misc'
+"Plugin 'xolox/vim-lua-ftplugin'
 "Plugin 'vim-scripts/luainspect.vim'
 "}
 "{markdown
 "Plugin 'plasticboy/vim-markdown'
 "Plugin 'suan/vim-instant-markdown'
 "}
-Plugin 'Valloric/YouCompleteMe'
 "Plugin 'mattn/emmet-vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
