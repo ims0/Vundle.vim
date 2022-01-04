@@ -21,11 +21,10 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'mbbill/code_complete'
 Plugin 'Valloric/YouCompleteMe'
-"Plugin 'tpope/vim-rhubarb'  "open GitHub URLs
-"Plugin 'grailbio/bazel-compilation-database'
+"Plugin 'tpope/vim-rhubarb' "open GitHub URLs
 "Plugin 'vim-scripts/cscope.vim'
 "{lua
-""Plugin 'xolox/vim-misc'
+"Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-lua-ftplugin'
 "Plugin 'vim-scripts/luainspect.vim'
 "}
@@ -102,9 +101,20 @@ nnoremap  <localleader>e :!echo <c-r>"
 nnoremap  <localleader>*  bi*<esc>ea*<esc>
 nnoremap  <localleader>ma  :set mouse=a<cr>
 nnoremap  <localleader>mv  :set mouse=v<cr>
+cnoremap  <c-a> <home>
+cnoremap  <c-e> <end>
+
+"{{{ map ctags,NerdTree:F10,F12
+nnoremap <F10>  :TrinityToggleTagList<CR>
+nnoremap <localleader>9  :TrinityToggleTagList<CR>
+nnoremap <F12>  :TrinityToggleNERDTree<CR>
+nnoremap <localleader>0  :TrinityToggleNERDTree<CR>
+"}}}
+
 autocmd FileType cpp nnoremap <buffer> <localleader>/ I//<esc>
 autocmd FileType c nnoremap <buffer> <localleader>/ I//<esc>
 autocmd FileType sh nnoremap <buffer> <localleader>/ I#<esc>
+autocmd bufwritepost $HOME/.vim/vimrc source %
 "}}}
 "设置切换Buffer快捷键"
 nnoremap <C-left> :bp<CR>
@@ -148,8 +158,9 @@ let g:Lf_WildIgnore = {
 " 检出父仓库列出的commit
 " git submodule update
 
-
-
+let g:ycm_log_level = 'error'
+let g:ycm_max_diagnostics_to_display = 10
+nmap <localleader>yfw <Plug>(YCMFindSymbolInWorkspace)
 let g:ycm_show_diagnostics_ui = 1  "switch of symtax diagnostic
 "default close ycm hover
 let g:ycm_auto_hover = "" 
@@ -160,13 +171,16 @@ let g:ycm_collect_identifiers_from_tag_files = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_confirm_extra_conf=0
 let g:ycm_complete_in_comments=0
-let g:ycm_error_symbol='>>'
+let g:ycm_error_symbol='E'
+let g:ycm_warning_symbol = 'W'
 let g:ycm_semantic_triggers = { 'c' : ['->', '.']}
-let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_select_completion = ['<TAB>','<Down>','<C-j>']
+let g:ycm_key_list_previous_completion = ['<S-TAB>', '<Up>','<C-k>']
 set completeopt=preview
 "YcmCompleter cmd
 "https://github.com/ycm-core/YouCompleteMe#goto-commands"
 nnoremap  gf :YcmCompleter GoToDefinitionElseDeclaration<cr>
+nnoremap  gr :YcmCompleter GoToReferences<cr>
 nnoremap  <localleader>dc :YcmCompleter GoToDeclaration<cr>
 nnoremap  <localleader>df :YcmCompleter GoToDefinition<cr>
 nnoremap  <localleader>go :YcmCompleter GoTo<cr>
@@ -306,15 +320,6 @@ inoremap ' ''<ESC>i
 "}
 
 
-
-"{{{ map ctags,srcExpl,NerdTree:F9,F10,F12
-    " Open and close the taglist.vim separately
-    nnoremap <F9>  :TrinityToggleTagList<CR>
-    " Open and close the srcexpl.vim separately
-    nnoremap <F10> :TrinityToggleSourceExplorer<CR>
-    " Open and close the NERD_tree.vim separately
-    nnoremap <F12>  :TrinityToggleNERDTree<CR>
-"}}}
 
 "
 "term gdb debug{

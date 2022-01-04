@@ -94,6 +94,7 @@ alias la='ls -A'
 alias l='ls -CF'
 alias gis='git status'
 alias dk='sudo docker'
+alias dki='sudo docker images'
 alias docker='sudo docker'
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -123,16 +124,24 @@ fi
 
 #add custom setting
 git-br(){
-    local branch=`git symbolic-ref --short -q HEAD 2>/dev/null`
+    branch=`git symbolic-ref --short -q HEAD 2>/dev/null`
     if [ $branch ];then
         printf "[%s]" $branch;
     fi    
 }
+gitbr(){
+    branch=`git symbolic-ref --short -q HEAD 2>/dev/null`
+    if [ $branch ];then
+        printf "%s" $branch;
+    fi    
+}
+
 
 # setting
 stty -ixon
 ulimit -c unlimited
 
+alias gti='git'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
