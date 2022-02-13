@@ -101,6 +101,7 @@ nnoremap  <localleader>e :!echo <c-r>"
 nnoremap  <localleader>*  bi*<esc>ea*<esc>
 nnoremap  <localleader>ma  :set mouse=a<cr>
 nnoremap  <localleader>mv  :set mouse=v<cr>
+nnoremap  <c-g>  G
 cnoremap  <c-a> <home>
 cnoremap  <c-e> <end>
 
@@ -384,17 +385,26 @@ nnoremap <F3> :call RefreshCscope()<cr>
 "}
 
 "show run result{
-function! ExecProm()
-    bufdo if expand("%")=="runResult" |bd runResult|endif
+function! ExecProm(onlyCompile)
+    "let l:currFile=expand("%")
+    "echomsg "cursor buffer:".l:currFile
+    if empty(expand("%"))
+        redraw | echo "fileName is empty"
+        return
+    endif
     exec "w"
     let headtitle  = system("echo -e '------------compile result--------------'")
     let runResLine = system("echo -e '--------------run result----------------'")
     if &filetype == 'c'
-        let compileResu = system('gcc '.expand('%').' -o '.expand('%<'))
-        let runResu=headtitle.compileResu.runResLine .system('./'.expand('%<'))
+        let compileResu = system('gcc '.expand('%').' -lrt -o '.expand('%<'))
+        if ! a:onlyCompile 
+            let runResu=headtitle.compileResu.runResLine .system('./'.expand('%<'))
+        endif
     elseif &filetype == 'cpp'
-        let compileResu = system('g++ -std=c++11 '.expand('%').' -lpthread -o '.expand('%<'))
-        let runResu=headtitle.compileResu.runResLine .system('./'.expand('%<'))
+        let compileResu = system('g++ -std=c++11 '.expand('%').' -lpthread -lrt -o '.expand('%<'))
+        if ! a:onlyCompile 
+             let runResu=headtitle.compileResu.runResLine .system('./'.expand('%<'))
+        endif
     elseif &filetype == 'python'
         let runResu=runResLine .system('python3 '.expand('%'))
     elseif &filetype == 'lua'
@@ -405,12 +415,22 @@ function! ExecProm()
         return
     endif
 
-    bot 9sp runResult
+    if a:onlyCompile && empty(compileResu)
+        redraw | echo "Compile OK"
+        return
+    endif
+    bufdo if expand("%")=="resultBuff" |bd resultBuff|endif
+    bot 9sp resultBuff
     setlocal buftype=nofile bufhidden=hide noswapfile
-    1s/^/\=runResu/
+    if a:onlyCompile
+        1s/^/\=headtitle.compileResu/
+    else
+        1s/^/\=runResu/
+    endif
     1
 endfunction
-nnoremap  <localleader>ll :call ExecProm()<cr>
+nnoremap  <localleader>ll :call ExecProm(0)<cr>
+nnoremap  <localleader>l :call ExecProm(1)<cr> 
 autocmd BufNewFile,BufWrite * :syntax match operators "\<compile result\>"
 autocmd BufNewFile,BufWrite * :syntax match operators "\<run result\>"
 hi operators ctermfg = DarkCyan
@@ -475,5 +495,14 @@ func! SetTitle()
 endfunc
 autocmd BufRead *.h set filetype=cpp
 "}
-
+function! Show(start, ...)
+    echohl Title
+    echomsg "start is ". a:start
+    echohl None
+    let index=1
+     while index <= a:0
+        echo " arg ".index." is ". a:{index}
+        let index = index+1
+    endwhile
+endfunction
 :endif
